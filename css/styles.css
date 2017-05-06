@@ -1,0 +1,50 @@
+* {
+    color: #4a4b75;
+}
+
+body {
+    background: url(../images/background.png);
+}
+
+.container {
+    background-color: white;
+    margin: 20px;
+    width: 95%;
+    max-width: 900px;
+}
+
+#pano {
+    width: 200px;
+    height: 200px;
+}
+
+
+.logo {
+    padding-top: 10px;
+    max-height: 136px;
+    vertical-align: bottom;
+    border: 0;
+}
+
+#map {
+    height: 400px;
+    margin-bottom: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#options-box {
+    color: black;
+    background-color: rgba(67, 167, 179, 0.5);
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 0px;
+    border: 2px solid #999;
+    border-radius: 3px;
+    padding: 10px 10px 20px 10px;
+}
+
+.dark-btn {
+    background-color: #4CAF50;
+    border-radius: 6px;
+}
