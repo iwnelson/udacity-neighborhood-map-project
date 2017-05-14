@@ -10,7 +10,8 @@ var initialSchools = [
         cityStateZip: "Bronx, NY 10468",
         cutoffScore: "512",
         website: "http://www.bxscience.edu/",
-        logo: "images/bronx-science-logo.jpg"
+        logo: "images/bronx-science-logo.jpg",
+        gsId: "1940"
     },
     {
         nameLong: "The Brooklyn Latin School",
@@ -23,7 +24,8 @@ var initialSchools = [
         cityStateZip: "Brooklyn, NY 11206",
         cutoffScore: "479",
         website: "http://www.brooklynlatin.org/",
-        logo: "images/brooklyn-latin-logo.png"
+        logo: "images/brooklyn-latin-logo.png",
+        gsId: "8799"
     },
     {
         nameLong: "Brooklyn Technical High School",
@@ -36,7 +38,8 @@ var initialSchools = [
         cityStateZip: "Brooklyn, NY 11217",
         cutoffScore: "486",
         website: "http://www.bths.edu/",
-        logo: "images/brooklyn-tech-logo.png"
+        logo: "images/brooklyn-tech-logo.png",
+        gsId: "1944"
     },
     {
         nameLong: "High School for Mathematics, Science and Engineering at the City College of New York",
@@ -49,7 +52,8 @@ var initialSchools = [
         cityStateZip: "New York, NY 10031",
         cutoffScore: "504",
         website: "http://www.hsmse.org/",
-        logo: "images/hsmse-logo.jpg"
+        logo: "images/hsmse-logo.jpg",
+        gsId: "8970"
     },
     {
         nameLong: "High School of American Studies at Lehman College",
@@ -62,7 +66,8 @@ var initialSchools = [
         cityStateZip: "Bronx, NY 10468",
         cutoffScore: "516",
         website: "http://www.hsas-lehman.org/",
-        logo: "images/hsas-logo.png"
+        logo: "images/hsas-logo.png",
+        gsId: "6960"
     },
     {
         nameLong: "Queens High School for the Sciences at York College",
@@ -75,7 +80,8 @@ var initialSchools = [
         cityStateZip: "Jamaica, NY 11451",
         cutoffScore: "507",
         website: "http://www.qhss.org/",
-        logo: "images/queens-science-logo.jpg"
+        logo: "images/queens-science-logo.jpg",
+        gsId: "7067"
     },
     {
         nameLong: "Staten Island Technical High School",
@@ -88,7 +94,8 @@ var initialSchools = [
         cityStateZip: "Staten Island, NY 10306",
         cutoffScore: "515",
         website: "http://www.siths.org/",
-        logo: "images/staten-island-tech-logo.png"
+        logo: "images/staten-island-tech-logo.png",
+        gsId: "6349"
     },
     {
         nameLong: "Stuyvesant High School",
@@ -101,8 +108,10 @@ var initialSchools = [
         cityStateZip: "New York, NY 10282",
         cutoffScore: "555",
         website: "http://stuy.enschool.org/",
-        logo: "images/stuyvesant-logo.png"
+        logo: "images/stuyvesant-logo.png",
+        gsId: "2796"
     }];
+
 
 var School = function(data) {
     this.nameLong = ko.observable(data.nameLong);
@@ -112,7 +121,9 @@ var School = function(data) {
     this.cutoffScore = ko.observable(data.cutoffScore);
     this.website = ko.observable(data.website);
     this.logo = ko.observable(data.logo);
+    this.gsId = ko.observable(data.gsId);
 }
+
 
 var ViewModel = function() {
     var self = this;
@@ -123,7 +134,7 @@ var ViewModel = function() {
         self.schoolList.push( new School(schoolItem) );
     });
 
-    this.currentSchool = ko.observable( this.schoolList()[0] );
+    this.currentSchool = ko.observable( null );
 
     this.setSchool = function(clickedSchool) {
         self.currentSchool(clickedSchool);

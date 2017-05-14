@@ -518,7 +518,7 @@ function initMap() {
                 "lat" : 40.7179464,
                 "lng" : -74.0139051
             },
-            streetAddress: "345 Chambers Street,",
+            streetAddress: "345 Chambers Street",
             cityStateZip: "New York, NY 10282",
             cutoffScore: "555",
             website: "http://stuy.enschool.org/",
@@ -539,10 +539,16 @@ function initMap() {
       // Get the position from the location array.
       var position = locations[i].location;
       var nameShort = locations[i].nameShort;
+      var streetAddress = locations[i].streetAddress;
+      var cityStateZip = locations[i].cityStateZip;
+      var logo = locations[i].logo;
       // Create a marker per location, and put into markers array.
       var marker = new google.maps.Marker({
         position: position,
         nameShort: nameShort,
+        streetAddress: streetAddress,
+        cityStateZip: cityStateZip,
+        logo: logo,
         animation: google.maps.Animation.DROP,
         icon: defaultIcon,
         id: i
@@ -580,42 +586,16 @@ function initMap() {
 function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
-      // Clear the infowindow content to give the streetview time to load.
+      // Clear the infowindow content.
       infowindow.setContent('');
       infowindow.marker = marker;
-      infowindow.setContent('<div>' + marker.nameShort + '</div>');
+      // infowindow.setContent('<div class="container"><div class="row"><div class="col-xs-4"><img class="logoSmall" src="' + marker.logo + '" alt="' + marker.nameShort + '"></div><div class="col-xs-8"><strong>' + marker.nameShort + '</strong><br><em>' + marker.streetAddress + '</em><br><em>' + marker.cityStateZip + '</em></div></div></div>')
+      infowindow.setContent('<div class="infoWindow"><span><img class="infoWindowLogo" src="' + marker.logo + '" alt="' + marker.nameShort + '"></span><span><strong>' + marker.nameShort + '</strong><br><em>' + marker.streetAddress + '</em><br><em>' + marker.cityStateZip + '</em></span></div>')
+      // infowindow.setContent('<div><img class="infoWindowLogo" src="' + marker.logo + '" alt="' + marker.nameShort + '"></div><div class="infoWindowText"><strong>' + marker.nameShort + '</strong><br>' + marker.streetAddress + '<br>' + marker.cityStateZip + '</div>');
       // Make sure the marker property is cleared if the infowindow is closed.
       infowindow.addListener('closeclick', function() {
         infowindow.marker = null;
       });
-      var streetViewService = new google.maps.StreetViewService();
-      var radius = 50;
-      // In case the status is OK, which means the pano was found, compute the
-      // position of the streetview image, then calculate the heading, then get a
-      // panorama from that and set the options
-      function getStreetView(data, status) {
-        if (status == google.maps.StreetViewStatus.OK) {
-          var nearStreetViewLocation = data.location.latLng;
-          var heading = google.maps.geometry.spherical.computeHeading(
-            nearStreetViewLocation, marker.position);
-            infowindow.setContent('<div>' + marker.nameShort + '</div><div id="pano"></div>');
-            var panoramaOptions = {
-              position: nearStreetViewLocation,
-              pov: {
-                heading: heading,
-                pitch: 30
-              }
-            };
-          var panorama = new google.maps.StreetViewPanorama(
-            document.getElementById('pano'), panoramaOptions);
-        } else {
-          infowindow.setContent('<div>' + marker.nameShort + '</div>' +
-            '<div>No Street View Found</div>');
-        }
-      }
-      // Use streetview service to get the closest streetview image within
-      // 50 meters of the markers position
-      streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
       // Open the infowindow on the correct marker.
       infowindow.open(map, marker);
     }

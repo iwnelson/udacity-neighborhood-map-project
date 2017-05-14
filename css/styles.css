@@ -6,6 +6,20 @@ body {
     background: url(../images/background.png);
 }
 
+.infoWindow {
+    width: 190px;
+}
+
+#greatSchools {
+    border: 2px solid #999;
+    border-radius: 3px;
+}
+
+.infoWindowLogo {
+    height: 50px;
+    float: left;
+}
+
 .container {
     background-color: white;
     margin: 20px;

@@ -10,6 +10,8 @@ Udacity Neighborhood Map Project
     * Custom modules
         * app.js
             * MVVM module utilizing knockout.js to operate top portion of page that stores and renders information for each school
+        * great-schools.js
+            * Accesses GreatSchools.org API for additinal information on schools
         * images
             * contains static image files
     * Referenced modules
