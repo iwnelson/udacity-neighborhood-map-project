@@ -1,23 +1,10 @@
+/*Global styles*/
 * {
     color: #4a4b75;
 }
 
 body {
     background: url(../images/background.png);
-}
-
-.infoWindow {
-    width: 190px;
-}
-
-#greatSchools {
-    border: 2px solid #999;
-    border-radius: 3px;
-}
-
-.infoWindowLogo {
-    height: 50px;
-    float: left;
 }
 
 .container {
@@ -27,12 +14,7 @@ body {
     max-width: 900px;
 }
 
-#pano {
-    width: 200px;
-    height: 200px;
-}
-
-
+/*School information section styles*/
 .logo {
     padding-top: 10px;
     max-height: 136px;
@@ -40,13 +22,12 @@ body {
     border: 0;
 }
 
-#map {
-    height: 400px;
-    margin-bottom: 20px;
-    margin-left: 5px;
-    margin-right: 5px;
+#greatSchools {
+    border: 2px solid #999;
+    border-radius: 3px;
 }
 
+/*Map form styles*/
 #options-box {
     color: black;
     background-color: rgba(67, 167, 179, 0.5);
@@ -58,7 +39,28 @@ body {
     padding: 10px 10px 20px 10px;
 }
 
+#search-within-time-text {
+    min-width: 175px
+}
+
+/*Map styles*/
+#map {
+    height: 400px;
+    margin-bottom: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 .dark-btn {
     background-color: #4CAF50;
     border-radius: 6px;
+}
+
+.infoWindow {
+    width: 190px;
+}
+
+.infoWindowLogo {
+    height: 50px;
+    float: left;
 }
