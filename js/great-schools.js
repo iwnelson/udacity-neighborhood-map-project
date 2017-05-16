@@ -4,7 +4,6 @@ function loadGs(item) {
     var gsId = mapId_gsId.split('_')[1];
     var schoolName = $(item).text();
     var $greatSchoolsHr = $('#greatSchoolsHr');
-    var $gsErr = $('#gsErr');
     $greatSchoolsHr.html('<hr>');
 
 
@@ -27,6 +26,7 @@ function loadGs(item) {
     // Set timout for YQL result
     var yqlRequestTimeout = setTimeout (function(){
         console.log('Did not received YQL response within 3 seconds while searching for ' + schoolName);
+        var $gsErr = $('#gsErr');
         $gsErr.text("Failed to connect to GreatSchools.org");
     }, 3000);
 
@@ -52,6 +52,7 @@ function loadGs(item) {
                 console.log('Successfully returned GreatSchools.org data from YQL for ' + schoolName);
                 var $gsLink = $('#gsLink');
                 var $gsRating = $('#gsRating');
+                var $gsErr = $('#gsErr');
 
                 $gsRating.text('GreatSchools Rating: ' + rating + ' / 10');
                 $gsLink.text(name + ' GreatSchools Profile');
