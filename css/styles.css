@@ -14,6 +14,11 @@ body {
     max-width: 900px;
 }
 
+/*Selected universal UX styles*/
+.teeny {
+    font-size: 0.75em;
+}
+
 /*School information section styles*/
 .logo {
     padding-top: 10px;

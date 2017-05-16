@@ -11,7 +11,7 @@ var initialSchools = [
         cutoffScore: "512",
         website: "http://www.bxscience.edu/",
         logo: "images/bronx-science-logo.jpg",
-        gsId: "1940"
+        mapId_gsId: "0_1940_a"
     },
     {
         nameLong: "The Brooklyn Latin School",
@@ -25,7 +25,7 @@ var initialSchools = [
         cutoffScore: "479",
         website: "http://www.brooklynlatin.org/",
         logo: "images/brooklyn-latin-logo.png",
-        gsId: "8799"
+        mapId_gsId: "1_8799_a"
     },
     {
         nameLong: "Brooklyn Technical High School",
@@ -39,7 +39,7 @@ var initialSchools = [
         cutoffScore: "486",
         website: "http://www.bths.edu/",
         logo: "images/brooklyn-tech-logo.png",
-        gsId: "1944"
+        mapId_gsId: "2_1944_a"
     },
     {
         nameLong: "High School for Mathematics, Science and Engineering at the City College of New York",
@@ -53,7 +53,7 @@ var initialSchools = [
         cutoffScore: "504",
         website: "http://www.hsmse.org/",
         logo: "images/hsmse-logo.jpg",
-        gsId: "8970"
+        mapId_gsId: "3_8970_a"
     },
     {
         nameLong: "High School of American Studies at Lehman College",
@@ -67,7 +67,7 @@ var initialSchools = [
         cutoffScore: "516",
         website: "http://www.hsas-lehman.org/",
         logo: "images/hsas-logo.png",
-        gsId: "6960"
+        mapId_gsId: "4_6960_a"
     },
     {
         nameLong: "Queens High School for the Sciences at York College",
@@ -81,7 +81,7 @@ var initialSchools = [
         cutoffScore: "507",
         website: "http://www.qhss.org/",
         logo: "images/queens-science-logo.jpg",
-        gsId: "7067"
+        mapId_gsId: "5_7067_a"
     },
     {
         nameLong: "Staten Island Technical High School",
@@ -95,7 +95,7 @@ var initialSchools = [
         cutoffScore: "515",
         website: "http://www.siths.org/",
         logo: "images/staten-island-tech-logo.png",
-        gsId: "6349"
+        mapId_gsId: "6_6349_a"
     },
     {
         nameLong: "Stuyvesant High School",
@@ -109,7 +109,7 @@ var initialSchools = [
         cutoffScore: "555",
         website: "http://stuy.enschool.org/",
         logo: "images/stuyvesant-logo.png",
-        gsId: "2796"
+        mapId_gsId: "7_2796_a"
     }];
 
 
@@ -121,8 +121,8 @@ var School = function(data) {
     this.cutoffScore = ko.observable(data.cutoffScore);
     this.website = ko.observable(data.website);
     this.logo = ko.observable(data.logo);
-    this.gsId = ko.observable(data.gsId);
-}
+    this.mapId_gsId = ko.observable(data.mapId_gsId);
+};
 
 
 var ViewModel = function() {
@@ -139,7 +139,7 @@ var ViewModel = function() {
     this.setSchool = function(clickedSchool) {
         self.currentSchool(clickedSchool);
     };
-}
+};
 
 ko.applyBindings(new ViewModel());
 
