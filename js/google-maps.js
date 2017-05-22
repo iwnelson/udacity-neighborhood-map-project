@@ -3,10 +3,7 @@ var map;
 var markers = [];
 var infoWindows = [];
 var directionsDisplay = null;
-var $schoolsOnMap = $('#schoolsOnMap');
-var $schoolsOnMapTitle = $('#schoolsOnMapTitle');
-var $clickForInfo = $('#clickForInfo');
-var $schoolsOnMapHr = $('#schoolsOnMapHr');
+var directionsSchools = [];
 
 // Map style from Snazzy Maps (https://snazzymaps.com/style/64899/main-streets-and-transit)
 var styles = [
@@ -435,6 +432,7 @@ function initMap() {
             },
             streetAddress: "75 West 205 Street",
             cityStateZip: "Bronx, NY 10468",
+            borough: 'bx',
             cutoffScore: "512",
             website: "http://www.bxscience.edu/",
             logo: "images/bronx-science-logo.jpg",
@@ -449,6 +447,7 @@ function initMap() {
             },
             streetAddress: "223 Graham Avenue",
             cityStateZip: "Brooklyn, NY 11206",
+            borough: 'bk',
             cutoffScore: "479",
             website: "http://www.brooklynlatin.org/",
             logo: "images/brooklyn-latin-logo.png",
@@ -463,6 +462,7 @@ function initMap() {
             },
             streetAddress: "29 Fort Greene Place",
             cityStateZip: "Brooklyn, NY 11217",
+            borough: 'bk',
             cutoffScore: "486",
             website: "http://www.bths.edu/",
             logo: "images/brooklyn-tech-logo.png",
@@ -477,6 +477,7 @@ function initMap() {
             },
             streetAddress: "240 Convent Avenue",
             cityStateZip: "New York, NY 10031",
+            borough: 'mh',
             cutoffScore: "504",
             website: "http://www.hsmse.org/",
             logo: "images/hsmse-logo.jpg",
@@ -491,6 +492,7 @@ function initMap() {
             },
             streetAddress: "2925 Goulden Avenue",
             cityStateZip: "Bronx, NY 10468",
+            borough: 'bx',
             cutoffScore: "516",
             website: "http://www.hsas-lehman.org/",
             logo: "images/hsas-logo.png",
@@ -505,6 +507,7 @@ function initMap() {
             },
             streetAddress: "94-50 159th Street",
             cityStateZip: "Jamaica, NY 11451",
+            borough: 'qn',
             cutoffScore: "507",
             website: "http://www.qhss.org/",
             logo: "images/queens-science-logo.jpg",
@@ -519,6 +522,7 @@ function initMap() {
             },
             streetAddress: "485 Clawson Street",
             cityStateZip: "Staten Island, NY 10306",
+            borough: 'si',
             cutoffScore: "515",
             website: "http://www.siths.org/",
             logo: "images/staten-island-tech-logo.png",
@@ -533,6 +537,7 @@ function initMap() {
             },
             streetAddress: "345 Chambers Street",
             cityStateZip: "New York, NY 10282",
+            borough: 'mh',
             cutoffScore: "555",
             website: "http://stuy.enschool.org/",
             logo: "images/stuyvesant-logo.png",
@@ -558,21 +563,29 @@ function initMap() {
       var cityStateZip = locations[i].cityStateZip;
       var logo = locations[i].logo;
       var gsId = locations[i].gsId;
+      var borough = locations[i].borough;
       // Create a marker per location, and put into markers array.
       var marker = new google.maps.Marker({
         position: position,
+        map: map,
         nameShort: nameShort,
         streetAddress: streetAddress,
         cityStateZip: cityStateZip,
+        borough: borough,
         logo: logo,
         animation: google.maps.Animation.DROP,
         icon: defaultIcon,
-        mapId_gsId: i + '_' + gsId
+        mapId: i
       });
       // Push the marker to our array of markers.
       markers.push(marker);
       // Create an onclick event to open the large infowindow at each marker.
       marker.addListener('click', function() {
+        for (var i = 0; i < markers.length; i++) {
+            if ( markers[i] !== this ) {
+                markers[i].setIcon(defaultIcon);
+            }
+        }
         populateInfoWindow(this, largeInfowindow);
       });
       // Two event listeners - one for mouseover, one for mouseout,
@@ -595,7 +608,6 @@ function initMap() {
       searchWithinTime();
     });
 
-    showSchools();
 }
 
 // This function populates the infowindow when the marker is clicked. We'll only allow
@@ -604,6 +616,8 @@ function initMap() {
 function populateInfoWindow(marker, infowindow) {
     // Check to make sure the infowindow is not already opened on this marker.
     if (infowindow.marker != marker) {
+      // Close other infowindows
+      closeAllInfoWindows();
       // Clear the infowindow content.
       infowindow.setContent('');
       infowindow.marker = marker;
@@ -626,49 +640,57 @@ function closeAllInfoWindows() {
   }
 }
 
+// Set default icon
+function setDefaultIcon() {
+    var defaultIcon = makeMarkerIcon('0091ff');
+    for (var i=0;i<markers.length;i++) {
+        markers[i].setIcon(defaultIcon);
+    }
+}
+
 // This function shows the s
 function showSelectedSchool(item) {
     closeAllInfoWindows();
-    var mapId_gsId = $(item).attr("id");
-    var mapId = mapId_gsId.split("_")[0];
-    var $mapLi = $('#' + markers[mapId].mapId_gsId + '_b');
+    setDefaultIcon();
+    var mapId = $(item).attr("id");
     var schoolName = markers[mapId].nameShort;
     var defaultIcon = makeMarkerIcon('0091ff');
     var highlightedIcon = makeMarkerIcon('FFFF24');
-    $schoolsOnMapTitle.text('Schools Currently Displayed:');
-    $clickForInfo.text('(click school name to view on map)');
-    $schoolsOnMapHr.html('<hr>');
     var largeInfowindow = new google.maps.InfoWindow();
     infoWindows.push(largeInfowindow);
-    for (var i = 0; i < markers.length; i++) {
-        markers[i].setIcon(defaultIcon);
-    }
-    $mapLi.text(schoolName);
     markers[mapId].setMap(map);
     markers[mapId].setIcon(highlightedIcon);
+    markers[mapId].setAnimation(google.maps.Animation.DROP);
     populateInfoWindow(markers[mapId], largeInfowindow);
 }
+
+// This function shows schools by borough
+function showByBorough(item) {
+    var borough = $(item).attr("id");
+    for (var i = 0; i < markers.length; i++) {
+        if ( markers[i].borough === borough ) {
+            markers[i].setMap(map);
+            markers[i].setAnimation(google.maps.Animation.DROP);
+        } else {
+            markers[i].setMap(null);
+        }
+    }
+}
+
 
 // This function will loop through the markers array and display them all.
 function showSchools() {
     // Extend the boundaries of the map for each marker and display the marker & display names of shown schools in list
     var bounds = new google.maps.LatLngBounds();
     var defaultIcon = makeMarkerIcon('0091ff');
-    $schoolsOnMapTitle.text('Schools Currently Displayed:');
-    $clickForInfo.text('(click school name to view on map)');
-    $schoolsOnMapHr.html('<hr>');
     if ( directionsDisplay !== null ) {
         directionsDisplay.setMap(null);
     }
     closeAllInfoWindows();
     for (var i = 0; i < markers.length; i++) {
-      var $mapLi = $('#' +  markers[i].mapId_gsId + '_b');
-      $mapLi.text(markers[i].nameShort);
       markers[i].setMap(map);
       markers[i].setIcon(defaultIcon);
-      // if ( infowindow.markers[i] != null ) {
-      //   infowindow.markers[i] = null;
-      // }
+      markers[i].setAnimation(google.maps.Animation.DROP);
       bounds.extend(markers[i].position);
     }
     map.fitBounds(bounds);
@@ -676,10 +698,6 @@ function showSchools() {
 
 // This function will loop through the listings and hide them all.
 function hideMarkers(markers) {
-    $schoolsOnMapHr.html('');
-    $schoolsOnMapTitle.html('');
-    $schoolsOnMap.children().html('');
-    $clickForInfo.html('');
     if ( directionsDisplay !== null ) {
         directionsDisplay.setMap(null);
     }
@@ -753,9 +771,7 @@ function displayMarkersWithinTime(response) {
     // Because there might be  multiple origins and destinations we have a nested loop
     // Then, make sure at least 1 result was found.
     var atLeastOne = false;
-    $schoolsOnMapTitle.html('Schools Currently Displayed:');
-    $clickForInfo.text('(click school name to view on map)');
-    $schoolsOnMapHr.html('<hr>');
+    var directionsSchools = [];
     for (var i = 0; i < origins.length; i++) {
       var results = response.rows[i].elements;
       for (var j = 0; j < results.length; j++) {
@@ -773,10 +789,10 @@ function displayMarkersWithinTime(response) {
           if (duration <= maxDuration) {
             //the origin [i] should = the markers[i]
             markers[i].setMap(map);
-            var $mapLi = $('#' +  markers[i].mapId_gsId + '_b');
-            $mapLi.text(markers[i].nameShort);
-            bounds.extend(markers[i].position);
+            directionsSchools.push(markers[i].mapId);
             atLeastOne = true;
+            bounds.extend(markers[i].position);
+
             // Create a mini infowindow to open immediately and contain the
             // distance and duration
             infowindow = new google.maps.InfoWindow({
@@ -800,11 +816,11 @@ function displayMarkersWithinTime(response) {
 
     }
     if (!atLeastOne) {
-      window.alert('We could not find any locations within that distance!');
-      $schoolsOnMap.append('<li>No schools within specified travel time</li>');
-
+        window.alert('We could not find any locations within that distance!');
     }
+    sendDirections(directionsSchools);
 }
+
 
 // This function is in response to the user selecting "show route" on one
 // of the markers within the calculated distance. This will display the route

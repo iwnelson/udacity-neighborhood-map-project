@@ -33,7 +33,7 @@ body {
 }
 
 /*Map form styles*/
-.options-box {
+#options-box {
     color: black;
     background-color: rgba(67, 167, 179, 0.5);
     margin-left: 5px;
