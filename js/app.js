@@ -394,6 +394,7 @@ function ViewModel() {
                         school.visible(true);
                     }
                 });
+                self.visibleSchools(true);
             }
         }, 1500);
     };
