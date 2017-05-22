@@ -4,6 +4,47 @@ var markers = [];
 var infoWindows = [];
 var directionsDisplay = null;
 var directionsSchools = [];
+var gsDataArray = [
+    {
+        'mapId': 0,
+        'gsRating': '',
+        'gsUrl': ''
+    },
+    {
+        'mapId': 1,
+        'gsRating': '',
+        'gsUrl': ''
+    },
+    {
+        'mapId': 2,
+        'gsRating': '',
+        'gsUrl': ''
+    },
+    {
+        'mapId': 3,
+        'gsRating': '',
+        'gsUrl': ''
+    },
+    {
+        'mapId': 4,
+        'gsRating': '',
+        'gsUrl': ''
+    },
+    {
+        'mapId': 5,
+        'gsRating': '',
+        'gsUrl': ''
+    },
+    {
+        'mapId': 6,
+        'gsRating': '',
+        'gsUrl': ''
+    },
+    {
+        'mapId': 7,
+        'gsRating': '',
+        'gsUrl': ''
+    }]
 
 // Map style from Snazzy Maps (https://snazzymaps.com/style/64899/main-streets-and-transit)
 var styles = [
@@ -575,7 +616,9 @@ function initMap() {
         logo: logo,
         animation: google.maps.Animation.DROP,
         icon: defaultIcon,
-        mapId: i
+        mapId: i,
+        gsRating: '',
+        gsUrl: ''
       });
       // Push the marker to our array of markers.
       markers.push(marker);
@@ -597,18 +640,17 @@ function initMap() {
         this.setIcon(defaultIcon);
       });
     }
-
-    document.getElementById('show-schools').addEventListener('click', showSchools);
-
-    document.getElementById('hide-schools').addEventListener('click', function() {
-      hideMarkers(markers);
-    });
-
-    document.getElementById('search-within-time').addEventListener('click', function() {
-      searchWithinTime();
-    });
-
 }
+
+// Updates markers with GreatSchools API results
+function loadGs(gsData) {
+    var mapId = gsData.mapId;
+    var gsRating = gsData.gsRating;
+    var gsUrl = gsData.gsUrl;
+    gsDataArray[mapId].gsRating = gsRating;
+    gsDataArray[mapId].gsUrl = gsUrl;
+}
+
 
 // This function populates the infowindow when the marker is clicked. We'll only allow
 // one infowindow which will open at the marker that is clicked, and populate based
@@ -621,7 +663,7 @@ function populateInfoWindow(marker, infowindow) {
       // Clear the infowindow content.
       infowindow.setContent('');
       infowindow.marker = marker;
-      infowindow.setContent('<div class="infoWindow"><span><img class="infoWindowLogo" src="' + marker.logo + '" alt="' + marker.nameShort + '"></span><span><strong>' + marker.nameShort + '</strong><br><em>' + marker.streetAddress + '</em><br><em>' + marker.cityStateZip + '</em></span></div>');
+      infowindow.setContent('<div class="infoWindow"><span><img class="infoWindowLogo" src="' + marker.logo + '" alt="' + marker.nameShort + '"></span><span><strong>' + marker.nameShort + '</strong><br><em>' + marker.streetAddress + '</em><br><em>' + marker.cityStateZip + '</em><br><u class"text-success>' + gsDataArray[marker.mapId].gsRating + '</u></span></div>');
       // Make sure the marker property is cleared if the infowindow is closed.
       infowindow.addListener('closeclick', function() {
         var defaultIcon = makeMarkerIcon('0091ff');
@@ -697,7 +739,7 @@ function showSchools() {
 }
 
 // This function will loop through the listings and hide them all.
-function hideMarkers(markers) {
+function hideMarkers() {
     if ( directionsDisplay !== null ) {
         directionsDisplay.setMap(null);
     }
@@ -853,4 +895,8 @@ function displayDirections(origin) {
         window.alert('Directions request failed due to ' + status);
       }
     });
+}
+
+function googleError() {
+    $('#options-box').html('<h2 class="text-center text-danger">Unable to retrieve data from Google Maps</h2>');
 }

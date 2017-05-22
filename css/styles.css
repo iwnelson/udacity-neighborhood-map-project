@@ -62,10 +62,10 @@ body {
 }
 
 .infoWindow {
-    width: 190px;
+    width: 240px;
 }
 
 .infoWindowLogo {
-    height: 50px;
+    height: 60px;
     float: left;
 }

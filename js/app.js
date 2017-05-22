@@ -291,6 +291,7 @@ function ViewModel() {
         });
         self.visibleSchools(true);
         closeAllInfoWindows();
+        showSchools();
         setDefaultIcon();
     };
 
@@ -301,6 +302,7 @@ function ViewModel() {
         });
         self.visibleSchools(false);
         closeAllInfoWindows();
+        hideMarkers();
         setDefaultIcon();
     };
 
@@ -349,6 +351,9 @@ function ViewModel() {
                     school.gsProfileMessage(err.gsProfileMessage);
                     school.gsUrl(err.gsUrl);
 
+                    var schoolJS = ko.toJS(school);
+                    loadGs(schoolJS);
+
                 // If GreatSchools request successful
                 } else {
 
@@ -359,6 +364,9 @@ function ViewModel() {
                     school.gsProfileMessage('GreatSchools.org School Overview');
                     school.gsUrl(gsUrl);
 
+                    var schoolJS = ko.toJS(school);
+                    loadGs(schoolJS);
+
                 }
         }).fail( function() {
 
@@ -368,6 +376,9 @@ function ViewModel() {
                 school.gsRating(err.gsRating);
                 school.gsProfileMessage(err.gsProfileMessage);
                 school.gsUrl(err.gsUrl);
+
+                var schoolJS = ko.toJS(school);
+                loadGs(schoolJS);
 
         });
     });
